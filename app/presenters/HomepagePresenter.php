@@ -2,62 +2,41 @@
 
 namespace App\Presenters;
 
-use Nette\Http\Session;
-use ToDoControl;
+use App\Model\TodoService;
+use App\Components\TodoControl;
 
-class HomepagePresenter extends BasePresenter
-{
-        private $sessionToDo;
+class HomepagePresenter extends BasePresenter{
+
+    /**
+     * @var TodoService
+     */
+    private $todoService;
+
+    public function __construct(TodoService $todoService){
         
-        public function __construct(Session $session){
-            $this->sessionToDo = $session->getSection('sessionToDo');
-        }
-
-    	public function renderDefault(){
-            
-            if(!isset($this->template->nodes)){
-               $this->template->nodes = $this->sessionToDo->nodes;
-           }
+		parent::__construct();
+		$this->todoService = $todoService;
 	}
         
-        
-        public function handleAddNode($value){
+    	public function actionDefault(){
             
-                if($this->sessionToDo->nodes){
-                    $this->sessionToDo->nodes[] = $value;
-                }else{
-                    $this->sessionToDo->nodes[1] = $value;
-                }
-                
-            $this->template->nodes = $this->sessionToDo->nodes;
-            $this->redrawControl('wholeList');
+            $this->template->nodes = $this->todoService->getNodes();
+	}
+        /*
+	 *
+	 * @return   TodoControl|NULL
+	 */
+        protected function createComponentTodo() {
+            
+            $control = new TodoControl();
+            $control->setService($this->todoService);
+            return $control;
         }
         
-        public function handleDelete($id){
+        public function actionDrop(){ 
             
-            unset($this->sessionToDo->nodes[$id]);
-            $this->template->nodes = $this->sessionToDo->nodes;
-            $this->redrawControl('wholeList');
-            
-          
-        }   
-        
-        public function handleEdit($id, $value){
-            
-            $this->template->nodes = $this->isAjax()
-                ? []
-                : $this->sessionToDo->nodes;
-            
-            $this->sessionToDo->nodes[$id]  = $value; 
-            $this->template->nodes[$id] = $value;
-            $this->redrawControl('toDoList');
-            
-          
-        }   
-        
-        public function actionDrop(){
-           unset($this->sessionToDo->id);
-           unset($this->sessionToDo->nodes);
+           $control = $this->getComponent('todo');
+           $control->drop();
            $this->redirect('Homepage:');
         }   
 }

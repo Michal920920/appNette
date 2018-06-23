@@ -1,18 +1,5 @@
 {block content}
-<a n:href="Homepage:drop">Drop</a>
-        <input id="node" data-link="{link addNode!}"/>
-        {snippet wholeList}
-            {if $nodes}
-                <ul n:snippet="toDoList">
-                    {foreach $nodes as $key => $value}
-                    <li n:snippet="node{$key}" data-id="{$key}" data-value="{$value}">
-                        <label class="singleNode">{$value}</label>
-                        <input type="text" class="edit-input" value="{$value}" data-link="{link edit!}"/>
-                        <button id="nodeDelete" data-id="{$key}" data-link="{link delete!}">x</button>
-                    </li>
-                    {/foreach}
-                </ul>   
-            {/if}
-        {/snippet}
+<a n:href="Homepage:">Drop</a>
+        {control todo}
 {/block}
 
