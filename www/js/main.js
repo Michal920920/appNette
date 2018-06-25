@@ -57,7 +57,7 @@ $(document).ready(function(){
 
     });
 
-    $(document).on('focusout','input[type=text]', function() {
+    $(document).on('focusout','.edit-input', function() {
         
         var li = $(this).parent();
         $(this).hide();

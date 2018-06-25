@@ -25,9 +25,9 @@ class TodoControl extends UI\Control{
             
             $this->template->setFile(__DIR__ . '/TodoControl.latte');
             if(!isset($this->template->nodes)){
-               $this->template->nodes = $this->service->getNodes();
-               
-           }$this->template->render();
+                $this->template->nodes = $this->service->getNodes();
+           }
+           $this->template->render();
             
         }
         

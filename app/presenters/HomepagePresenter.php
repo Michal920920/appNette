@@ -3,6 +3,7 @@
 namespace App\Presenters;
 
 use App\Model\TodoService;
+use App\Model\UserManager;
 use App\Components\TodoControl;
 
 class HomepagePresenter extends BasePresenter{
@@ -11,6 +12,7 @@ class HomepagePresenter extends BasePresenter{
      * @var TodoService
      */
     private $todoService;
+    public $user;
 
     public function __construct(TodoService $todoService){
         
@@ -22,10 +24,7 @@ class HomepagePresenter extends BasePresenter{
             
             $this->template->nodes = $this->todoService->getNodes();
 	}
-        /*
-	 *
-	 * @return   TodoControl|NULL
-	 */
+
         protected function createComponentTodo() {
             
             $control = new TodoControl();

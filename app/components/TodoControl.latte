@@ -1,4 +1,10 @@
     <input id="node" data-link="{link addNode!}"/>
+    {if isset($user->getIdentity()->username)}
+        <h2 n:block=title>Úkoly uživatele: {$user->getIdentity()->username}</h2>
+    {else}
+        <h2>Vaše úkoly</h2>
+    {/if}
+    
         {snippet wholeList}
             {if $nodes}
                 <ul n:snippet="toDoList">

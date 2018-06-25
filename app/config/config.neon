@@ -26,3 +26,4 @@ database:
 services:
         - App\Model\TodoService
         router: App\RouterFactory::createRouter
+        userManager: App\Model\UserManager

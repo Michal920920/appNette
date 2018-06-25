@@ -1,44 +1,92 @@
 <?php
 
 namespace App\Model;
-
+use Nette;
 use Nette\Http\Session;
 use Nette\SmartObject;
+use Nette\Security\User;
+use Nette\Database\Context;
 
 class TodoService{
     
     use SmartObject;
 
     private $sessionToDo;
+    /** @var Nette\Database\Context */
+    private $database;
+    /** @var Nette\Security\User */
+    private $user;
     
-        public function __construct(Session $session){
+             const
+             TABLE_NAME = 'nodes',
+             COLUMN_NODE_ID = 'node_id',
+             COLUMN_NODE = 'node',
+             COLUMN_USER_ID = 'user_id',
+             COLUMN_POST_DONE = 'post_done';
+    
+        public function __construct(Session $session, Context $database, User $user){
             
             $this->sessionToDo = $session->getSection('sessionToDo');
+            $this->user = $user;
+            $this->database = $database;
+            
         }
         
         public function getNodes(){
             
-            return $this->sessionToDo->nodes;
+            if($this->user->getIdentity()){
+                return $this->database->fetchPairs('SELECT * FROM nodes WHERE user_id = ?', $this->user->getIdentity()->id);
+            }else{
+                return $this->sessionToDo->nodes;
+            }
         }
         
         public function addNode($value){
             
-                if($this->sessionToDo->nodes){
-                    $this->sessionToDo->nodes[] = $value;
-                }else{
-                    $this->sessionToDo->nodes[1] = $value;
+            if($this->user->getIdentity()){
+                $this->database->table(self::TABLE_NAME)->insert(array(
+                    self::COLUMN_NODE => $value,
+                    self::COLUMN_USER_ID => $this->user->getIdentity()->id,
+                    self::COLUMN_POST_DONE => 0
+                ));
+            }else{
+                
+            if($this->sessionToDo->nodes){
+                $this->sessionToDo->nodes[] = $value;
+            }else{
+                $this->sessionToDo->nodes[1] = $value;
                 }
+            }
         }
         
         public function deleteNode($id){
             
-            unset($this->sessionToDo->nodes[$id]);
+            if($this->user->getIdentity()){
+                $this->database->query(
+                        'DELETE FROM `nodes`
+                         WHERE `nodes`.`node_id` = ?
+                         AND `nodes`.`user_id` = ?', 
+                         $id, $this->user->getIdentity()->id 
+                        );
+            }else{
+                unset($this->sessionToDo->nodes[$id]);
+            }
         }   
         
         public function editNode($id, $value){
             
-            $this->sessionToDo->nodes[$id]  = $value;
-        }   
+            if($this->user->getIdentity()){
+                $this->database->query(
+                        'UPDATE `nodes`
+                         SET `node` = ?
+                         WHERE `nodes`.`node_id` = ?
+                         AND `nodes`.`user_id` = ?', 
+                         $value, $id, $this->user->getIdentity()->id 
+                        );
+            }else{
+                $this->sessionToDo->nodes[$id]  = $value;
+            }
+        }
         
         public function dropNodes(){
             
