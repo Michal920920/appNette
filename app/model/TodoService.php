@@ -22,7 +22,7 @@ class TodoService{
              COLUMN_NODE_ID = 'node_id',
              COLUMN_NODE = 'node',
              COLUMN_USER_ID = 'user_id',
-             COLUMN_POST_DONE = 'post_done';
+             COLUMN_NODE_DONE = 'node_done';
     
         public function __construct(Session $session, Context $database, User $user){
             
@@ -47,14 +47,14 @@ class TodoService{
                 $this->database->table(self::TABLE_NAME)->insert(array(
                     self::COLUMN_NODE => $value,
                     self::COLUMN_USER_ID => $this->user->getIdentity()->id,
-                    self::COLUMN_POST_DONE => 0
+                    self::COLUMN_NODE_DONE => 0
                 ));
             }else{
                 
             if($this->sessionToDo->nodes){
-                $this->sessionToDo->nodes[] = $value;
+                $this->sessionToDo->nodes[] = array("node" => $value,"node_done" => 0);
             }else{
-                $this->sessionToDo->nodes[1] = $value;
+                 $this->sessionToDo->nodes[1] = array("node" => $value,"node_done" => 0);
                 }
             }
         }
@@ -84,9 +84,23 @@ class TodoService{
                          $value, $id, $this->user->getIdentity()->id 
                         );
             }else{
-                $this->sessionToDo->nodes[$id]  = $value;
+                $this->sessionToDo->nodes[$id]['node'] = $value;
             }
         }
+        
+        public function doneNode($id){
+            if($this->user->getIdentity()){
+                $this->database->query(
+                        'UPDATE `nodes`
+                         SET `node_done` = 1
+                         WHERE `nodes`.`node_id` = ?
+                         AND `nodes`.`user_id` = ?', 
+                         $id, $this->user->getIdentity()->id 
+                        );
+            }else{
+              $this->sessionToDo->nodes[$id]['node_done'] = true;
+            }
+        }  
         
         public function dropNodes(){
             

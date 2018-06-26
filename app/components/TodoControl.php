@@ -44,6 +44,12 @@ class TodoControl extends UI\Control{
             
         }   
         
+        public function handleDone($id){
+            
+            $this->service->doneNode($id);
+            $this->redrawControl('wholeList');
+            
+        }   
         public function handleEdit($id, $value){
             
             $this->service->editNode($id, $value);
@@ -51,8 +57,9 @@ class TodoControl extends UI\Control{
             
         }   
         
-        public function drop(){
+        public function handleDrop(){
             
            $this->service->dropNodes();
+           $this->redirect('this');
         }   
 }

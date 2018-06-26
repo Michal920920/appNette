@@ -17,7 +17,7 @@ $(document).ready(function(){
         }
     });
 
-    $("#snippet-todo-wholeList").on('click','button', function(){
+    $("#snippet-todo-wholeList").on('click','#nodeDelete', function(){
              $.nette.ajax({
                 type: "POST",
 		url: $(this).attr("data-link"),
@@ -25,6 +25,17 @@ $(document).ready(function(){
                     "todo-id": $(this).attr("data-id")
                     }
 		})
+    });
+    
+        $("#snippet-todo-wholeList").on('click','#nodeDone', function(){
+             $.nette.ajax({
+                type: "POST",
+		url: $(this).attr("data-link"),
+                data: {
+                    "todo-id": $(this).attr("data-id")
+                    }
+		})
+                $("label.singleNode").css('text-decoration', 'underline');
     });
 
     $(document).on('dblclick','label.singleNode', function () {
@@ -64,4 +75,5 @@ $(document).ready(function(){
         li.find('label').show();
         $(this).val(li.attr("data-value"));
     });
+    
 });
