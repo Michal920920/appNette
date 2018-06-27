@@ -35,7 +35,8 @@ class TodoService{
         public function getNodes(){
             
             if($this->user->getIdentity()){
-                return $this->database->fetchPairs('SELECT * FROM nodes WHERE user_id = ?', $this->user->getIdentity()->id);
+               return $this->database->table(self::TABLE_NAME)->where(
+                       self::COLUMN_USER_ID, [$this->user->getIdentity()->id]);
             }else{
                 return $this->sessionToDo->nodes;
             }
@@ -47,8 +48,7 @@ class TodoService{
                 $this->database->table(self::TABLE_NAME)->insert(array(
                     self::COLUMN_NODE => $value,
                     self::COLUMN_USER_ID => $this->user->getIdentity()->id,
-                    self::COLUMN_NODE_DONE => 0
-                ));
+                    self::COLUMN_NODE_DONE => 0));
             }else{
                 
             if($this->sessionToDo->nodes){
@@ -62,12 +62,10 @@ class TodoService{
         public function deleteNode($id){
             
             if($this->user->getIdentity()){
-                $this->database->query(
-                        'DELETE FROM `nodes`
-                         WHERE `nodes`.`node_id` = ?
-                         AND `nodes`.`user_id` = ?', 
-                         $id, $this->user->getIdentity()->id 
-                        );
+                  $this->database->table(self::TABLE_NAME)->where(
+                          self::COLUMN_NODE_ID,[$id,
+                          self::COLUMN_USER_ID,[$this->user->getIdentity()->id]])
+                          ->delete();
             }else{
                 unset($this->sessionToDo->nodes[$id]);
             }
@@ -76,29 +74,23 @@ class TodoService{
         public function editNode($id, $value){
             
             if($this->user->getIdentity()){
-                $this->database->query(
-                        'UPDATE `nodes`
-                         SET `node` = ?
-                         WHERE `nodes`.`node_id` = ?
-                         AND `nodes`.`user_id` = ?', 
-                         $value, $id, $this->user->getIdentity()->id 
-                        );
+                    $this->database->table(self::TABLE_NAME)->where(
+                        self::COLUMN_NODE_ID,[$id,
+                        self::COLUMN_USER_ID,[$this->user->getIdentity()->id]])
+                        ->update([self::COLUMN_NODE => $value]);
             }else{
                 $this->sessionToDo->nodes[$id]['node'] = $value;
             }
         }
         
-        public function doneNode($id){
+        public function doneNode($id, $done){
             if($this->user->getIdentity()){
-                $this->database->query(
-                        'UPDATE `nodes`
-                         SET `node_done` = 1
-                         WHERE `nodes`.`node_id` = ?
-                         AND `nodes`.`user_id` = ?', 
-                         $id, $this->user->getIdentity()->id 
-                        );
+                $this->database->table(self::TABLE_NAME)->where(
+                    self::COLUMN_NODE_ID,[$id,
+                    self::COLUMN_USER_ID,[$this->user->getIdentity()->id]])
+                    ->update([self::COLUMN_NODE_DONE => $done]);
             }else{
-              $this->sessionToDo->nodes[$id]['node_done'] = true;
+              $this->sessionToDo->nodes[$id]['node_done'] = $done;
             }
         }  
         

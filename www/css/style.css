@@ -11,9 +11,9 @@ h1 {
 .edit-input {
     display:none;
 }
-/*.nodeEdit{
-   display:none;
-}*/
+li.done label{
+    text-decoration: line-through;
+}
 
 #ajax-spinner {
 	margin: 15px 0 0 15px;

@@ -3,7 +3,7 @@
 });
 
 $(document).ready(function(){
-
+    
     $("#node").keypress(function(e){
         if(e.which == 13 && $(this).val() != '') {
              $.nette.ajax({
@@ -27,17 +27,32 @@ $(document).ready(function(){
 		})
     });
     
-        $("#snippet-todo-wholeList").on('click','#nodeDone', function(){
-             $.nette.ajax({
+    $(document).on('change', "#nodeDone",  function(){
+       var li = $(this).parent();
+        
+        if(li.hasClass('done')){
+            $.nette.ajax({
                 type: "POST",
-		url: $(this).attr("data-link"),
+                url: $(this).attr("data-link"),
                 data: {
-                    "todo-id": $(this).attr("data-id")
-                    }
+                    "todo-id": $(this).attr("data-id"),
+                    "todo-done": ""
+                      }    
 		})
-                $("label.singleNode").css('text-decoration', 'underline');
+                
+            }
+            else{
+                $.nette.ajax({
+                    type: "POST",
+                    url: $(this).attr("data-link"),
+                    data: {
+                      "todo-id": $(this).attr("data-id"),
+                      "todo-done": "done"
+                        }
+		})
+            }
     });
-
+    
     $(document).on('dblclick','label.singleNode', function () {
         var li = $(this).parent();
         li.find('label').hide();

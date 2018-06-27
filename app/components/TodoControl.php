@@ -44,11 +44,10 @@ class TodoControl extends UI\Control{
             
         }   
         
-        public function handleDone($id){
+        public function handleDone($id, $done){
             
-            $this->service->doneNode($id);
+            $this->service->doneNode($id, $done);
             $this->redrawControl('wholeList');
-            
         }   
         public function handleEdit($id, $value){
             

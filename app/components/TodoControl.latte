@@ -5,17 +5,15 @@
     {else}
         <h2>Vaše úkoly</h2>
     {/if}
-    
         {snippet wholeList}
             {if $nodes}
                 <ul n:snippet="toDoList">
                     {foreach $nodes as $key => $value}
-                        
-                    <li n:snippet="{$key}" data-id="{$key}" data-value="{$value['node']}">
+                    <li n:snippet="{$key}" class="{$value['node_done']}" data-id="{$key}" data-value="{$value['node']}">
                         <label class="singleNode">{$value['node']}</label>
                         <input type="text" class="edit-input" value="{$value['node']}" data-link="{link edit!}"/>
                         <button id="nodeDelete" data-id="{$key}" data-link="{link delete!}">x</button>
-                        <button id="nodeDone" data-id="{$key}" data-link="{link done!}">edit</button>
+                        <input type="checkbox" id="nodeDone" data-id="{$key}" data-link="{link done!}"/>
                     </li>
                     {/foreach}
                 </ul>   
