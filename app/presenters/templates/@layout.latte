@@ -19,14 +19,14 @@
 	{block head}{/block}
 </head>
 
-<body>
+<body> 
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
         {if $user->loggedIn}
-             <li><a n:href="Sign:out" data-ajax="false">Odhlásit</a></li>
-             <li><a n:href="Sign:profile">{$user->getIdentity()->username}</a></li>
+             <a n:href="Sign:out" data-ajax="false">Odhlásit</a>
+             <a n:href="Sign:profile">{$user->getIdentity()->username}</a>
         {else}
-             <li><a n:href="Sign:in">Přihlásit</a></li>
+             <a n:href="Sign:in">Přihlásit</a>
         {/if}
         
 	{include content}

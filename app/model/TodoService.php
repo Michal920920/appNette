@@ -29,7 +29,6 @@ class TodoService{
             $this->sessionToDo = $session->getSection('sessionToDo');
             $this->user = $user;
             $this->database = $database;
-            
         }
         
         public function getNodes(){
@@ -42,19 +41,28 @@ class TodoService{
             }
         }
         
+        public function getNode($id){
+            
+            if($this->user->getIdentity()){
+               return $this->database->table(self::TABLE_NAME)->where(
+                       self::COLUMN_NODE_ID, [$id]);
+            }else{
+               return array($id => $this->sessionToDo->nodes[$id]);
+            }
+        }
+        
         public function addNode($value){
             
             if($this->user->getIdentity()){
                 $this->database->table(self::TABLE_NAME)->insert(array(
                     self::COLUMN_NODE => $value,
                     self::COLUMN_USER_ID => $this->user->getIdentity()->id,
-                    self::COLUMN_NODE_DONE => 0));
+                    self::COLUMN_NODE_DONE => ''));
             }else{
-                
-            if($this->sessionToDo->nodes){
-                $this->sessionToDo->nodes[] = array("node" => $value,"node_done" => 0);
-            }else{
-                 $this->sessionToDo->nodes[1] = array("node" => $value,"node_done" => 0);
+                if($this->sessionToDo->nodes){
+                    $this->sessionToDo->nodes[] = array("node" => $value,"node_done" => '');
+                }else{
+                    $this->sessionToDo->nodes[1] = array("node" => $value,"node_done" => '');
                 }
             }
         }
@@ -84,6 +92,7 @@ class TodoService{
         }
         
         public function doneNode($id, $done){
+            
             if($this->user->getIdentity()){
                 $this->database->table(self::TABLE_NAME)->where(
                     self::COLUMN_NODE_ID,[$id,

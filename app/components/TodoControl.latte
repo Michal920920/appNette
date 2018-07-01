@@ -1,19 +1,19 @@
-    <input id="node" data-link="{link addNode!}"/>
-    <a n:href="drop">drop</a>
     {if isset($user->getIdentity()->username)}
         <h2 n:block=title>Úkoly uživatele: {$user->getIdentity()->username}</h2>
     {else}
         <h2>Vaše úkoly</h2>
     {/if}
+
+    <input id="node" data-link="{link addNode!}" placeholder="Nový úkol"/>
         {snippet wholeList}
             {if $nodes}
                 <ul n:snippet="toDoList">
                     {foreach $nodes as $key => $value}
-                    <li n:snippet="{$key}" class="{$value['node_done']}" data-id="{$key}" data-value="{$value['node']}">
-                        <label class="singleNode">{$value['node']}</label>
-                        <input type="text" class="edit-input" value="{$value['node']}" data-link="{link edit!}"/>
-                        <button id="nodeDelete" data-id="{$key}" data-link="{link delete!}">x</button>
-                        <input type="checkbox" id="nodeDone" data-id="{$key}" data-link="{link done!}"/>
+                    <li n:snippet="{$key}" data-id="{$key}" data-value="{$value['node']}">
+                        <input type="checkbox" class="nodeDone" data-link="{link done!}" n:attr="checked => $value['node_done'] ? true"/>
+                        <label n:class="$toggle == 'input' ? singleNode-hide : singleNode.$value['node_done']" data-link="{link edit!}">{$value['node']}</label>
+                        <input type="text" n:class="$toggle == 'label' ? edit-input-hide : edit-input" value="{$value['node']}"/>
+                        <button class="nodeDelete" data-link="{link delete!}">x</button>
                     </li>
                     {/foreach}
                 </ul>   

@@ -23,12 +23,14 @@ class TodoControl extends UI\Control{
         
         public function render(){
             
-            $this->template->setFile(__DIR__ . '/TodoControl.latte');
-            if(!isset($this->template->nodes)){
+           $this->template->setFile(__DIR__ . '/TodoControl.latte');
+           if(!isset($this->template->nodes)){
                 $this->template->nodes = $this->service->getNodes();
            }
+           if(!isset($this->template->toggle)){
+                $this->template->toggle = 'label'; 
+           }
            $this->template->render();
-            
         }
         
         public function handleAddNode($value){
@@ -36,29 +38,27 @@ class TodoControl extends UI\Control{
             $this->service->addNode($value);
             $this->redrawControl('wholeList');
         }
-        
+    
         public function handleDelete($id){
             
             $this->service->deleteNode($id);
             $this->redrawControl('wholeList');
-            
         }   
         
         public function handleDone($id, $done){
             
             $this->service->doneNode($id, $done);
-            $this->redrawControl('wholeList');
-        }   
-        public function handleEdit($id, $value){
-            
-            $this->service->editNode($id, $value);
+            $this->template->nodes = $this->service->getNode($id);
             $this->redrawControl('toDoList');
-            
         }   
         
-        public function handleDrop(){
-            
-           $this->service->dropNodes();
-           $this->redirect('this');
+        public function handleEdit($id, $value, $toggle){
+            if($value){
+                $this->service->editNode($id, $value);
+            }
+            $this->template->toggle = $toggle;
+            $this->template->nodes = $this->service->getNode($id);
+            $this->redrawControl('toDoList');
+           
         }   
 }

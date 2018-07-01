@@ -1,4 +1,5 @@
 body {
+        font: 400 13.3333px Arial;
 	font-size: 15px;
 	line-height: 1.6;
 	color: #333;
@@ -8,11 +9,119 @@ body {
 h1 {
 	color: #3484D2;
 }
-.edit-input {
+
+h2{
+    
+    display: block;
+    margin: 0 auto;
+}
+#node{
+    padding: 20px 235px 17px 60px;
+    background-color: #fdfdfd;
+    font-size: 20px;
+    border: 2px solid #dfdfdf;
+    display: block;
+    margin: 0 auto;
+}
+#snippet-todo-wholeList {
+    line-height: 1.4em;
+    background: #f5f5f5;
+    color: #4d4d4d;
+    min-width: 230px;
+    max-width: 550px;
+    margin: 0 auto;
+}
+#snippet-todo-toDoList{
+    display: block;
+    list-style-type: none;
+    margin-top: 0;
+    -webkit-padding-start: 0px;
+            
+}
+li{
+    
+    list-style-type: none;
+    position: relative;
+    font-size: 18px;
+    border-bottom: 2px solid #ededed;
+        
+}
+.nodeDone{
+    text-align: center;
+    width: 40px;
+    height: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    border: none;
+    
+}
+.singleNode{
+    white-space: pre-line;
+    word-break: break-all;
+    padding: 15px 60px 15px 15px;
+    margin-left: 45px;
+    display: block;
+    line-height: 1.2;
+    transition: color 0.4s;
+    font-size: 24px;
+}
+.singleNode-hide{
     display:none;
 }
-li.done label{
+.singleNodedone{
+    white-space: pre-line;
+    word-break: break-all;
+    padding: 15px 60px 15px 15px;
+    margin-left: 45px;
+    display: block;
+    line-height: 1.2;
+    transition: color 0.4s;
+    color: #a1bea1;
     text-decoration: line-through;
+    min-width: 150px;
+    font-size: 24px;
+    width: auto;
+}
+.edit-input-hide {
+    display:none;
+}
+.edit-input{
+    white-space: pre-line;
+    margin-left: 45px;
+    position: relative;
+    width: auto;
+    font-size: 24px;
+    line-height: 1.4em;
+    outline: none;
+    color: inherit;
+    padding: 12px 60px 12px 15px;
+    border: 1px solid #999;
+    box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+.nodeDelete{
+    position: absolute;
+    top: 0;
+    right: 10px;
+    bottom: 0;
+    width: 40px;
+    height: 40px;
+    margin: auto 0;
+    font-size: 30px;
+    color: #C22;
+    margin-bottom: 11px;
+    transition: color 0.2s ease-out;
+}
+button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: 100%;
+    color: inherit;
+    appearance: none;
 }
 
 #ajax-spinner {
