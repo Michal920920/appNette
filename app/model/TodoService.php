@@ -124,9 +124,9 @@ class TodoService {
                         $nodes = $this->sessionToDo->nodes;
                         
                         //aktualizuje pozice
-                        for($i=0;isset($nodes[$i]);$i++){
-                            if($nodes[$i]['position'] > $delNode['position']){
-                                $nodes[$i]['position'] = $nodes[$i]['position']-1;
+                        foreach($nodes as $key => $val){
+                            if($val['position'] > $delNode['position']){
+                                $nodes[$key]['position'] = $val['position']-1;
                             }
                         }
                         //vymaže požadovaný záznam a přeřadí prvky od indexu 0
