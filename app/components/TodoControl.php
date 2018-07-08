@@ -4,61 +4,57 @@ namespace App\Components;
 
 use App\Model\TodoService;
 use Nette\Application\UI;
+use Tracy\Debugger;
+use Tracy;
 
-class TodoControl extends UI\Control{
-            
-        /** @var     TodoService */
-        private $service;
+class TodoControl extends UI\Control {
 
-        /**
-	 * Vstříkne službu, kterou tato komponenta bude používat pro práci s komentáři.
-	 *
-	 * @param    TodoService $service
-	 * @return   void
-	 */
-	public function setService(TodoService $service){
-            
-		$this->service = $service;
+	/** @var TodoService @inject */
+	public $todoService;
+
+	public $editableId = null;
+
+	public function render() {
+		$this->template->editableId = $this->editableId;
+		$this->template->nodes = $this->todoService->getNodes();
+		$this->template->setFile(__DIR__ . '/TodoControl.latte');
+		$this->template->render();
 	}
-        
-        public function render(){
+
+	public function handleAddNode($value) {
+
+		$this->todoService->addNode($value);
+		$this->redrawControl('wholeList');
+	}
+
+	public function handleDelete($id, $position) {
             
-           $this->template->setFile(__DIR__ . '/TodoControl.latte');
-           if(!isset($this->template->nodes)){
-                $this->template->nodes = $this->service->getNodes();
-           }
-           if(!isset($this->template->toggle)){
-                $this->template->toggle = 'label'; 
-           }
-           $this->template->render();
-        }
-        
-        public function handleAddNode($value){
+		$this->todoService->deleteNode($id, $position);
+		$this->redrawControl('wholeList');
+	}
+
+	public function handleDone($id, $done) {
+
+		$this->todoService->doneNode($id, $done == "done" ? "" : "done");
+		$this->redrawControl('wholeList');
+	}
+
+	public function handleUpdateTask($id, $value) {
+		$this->todoService->editNode($id, $value);
+		$this->redrawControl("wholeList");
+	}
+
+	public function handleEdit($id) {
+		$this->editableId = $id;
+                $this->redrawControl('wholeList');
+	}
+        public function handleUpdateOrder($order = array()) {
+                $this->todoService->editOrder($order);
+		$this->redrawControl('wholeList');
+	}
+           public function handleDrop(){
             
-            $this->service->addNode($value);
-            $this->redrawControl('wholeList');
-        }
-    
-        public function handleDelete($id){
-            
-            $this->service->deleteNode($id);
-            $this->redrawControl('wholeList');
-        }   
-        
-        public function handleDone($id, $done){
-            
-            $this->service->doneNode($id, $done);
-            $this->template->nodes = $this->service->getNode($id);
-            $this->redrawControl('toDoList');
-        }   
-        
-        public function handleEdit($id, $value, $toggle){
-            if($value){
-                $this->service->editNode($id, $value);
-            }
-            $this->template->toggle = $toggle;
-            $this->template->nodes = $this->service->getNode($id);
-            $this->redrawControl('toDoList');
-           
-        }   
+           $this->todoService->dropNodes();
+           $this->redirect('this');
+        }  
 }

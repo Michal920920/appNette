@@ -27,3 +27,9 @@ services:
         - App\Model\TodoService
         router: App\RouterFactory::createRouter
         userManager: App\Model\UserManager
+
+        - App\Components\TodoControlFactory
+        todoControl:
+        	class: App\Components\TodoControl
+        	autowired: no
+        	inject: true

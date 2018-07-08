@@ -1,21 +1,36 @@
-    {if isset($user->getIdentity()->username)}
-        <h2 n:block=title>Úkoly uživatele: {$user->getIdentity()->username}</h2>
-    {else}
-        <h2>Vaše úkoly</h2>
-    {/if}
+{if isset($user->getIdentity()->username)}
+	<h2 n:block=title>Úkoly uživatele: {$user->getIdentity()->username}</h2>
+{else}
+	<h2>Vaše úkoly</h2>
+{/if}
 
-    <input id="node" data-link="{link addNode!}" placeholder="Nový úkol"/>
-        {snippet wholeList}
-            {if $nodes}
-                <ul n:snippet="toDoList">
-                    {foreach $nodes as $key => $value}
-                    <li n:snippet="{$key}" data-id="{$key}" data-value="{$value['node']}">
-                        <input type="checkbox" class="nodeDone" data-link="{link done!}" n:attr="checked => $value['node_done'] ? true"/>
-                        <label n:class="$toggle == 'input' ? singleNode-hide : singleNode.$value['node_done']" data-link="{link edit!}">{$value['node']}</label>
-                        <input type="text" n:class="$toggle == 'label' ? edit-input-hide : edit-input" value="{$value['node']}"/>
-                        <button class="nodeDelete" data-link="{link delete!}">x</button>
-                    </li>
-                    {/foreach}
-                </ul>   
-            {/if}
-        {/snippet}
+<input id="node" data-link="{link addNode!}" placeholder="Nový úkol"/>
+{snippet wholeList}
+	{if $nodes}
+		<ul n:snippet="toDoList" data-link="{link updateOrder!}">
+			{foreach $nodes as $key => $value}
+				<li n:snippet="{$key}" data-id="{$value['node_id']}" data-value="{$value['node']}" id="{$value['position']}">
+					<a n:href="done! id=>$value[node_id], done=>$value[node_done]" class="ajax">
+						<input type="checkbox" class="nodeDone" data-link="{link done!}" n:attr="checked => $value['node_done'] ? true"/>
+					</a>
+					{if $value[node_id] == $editableId && $editableId != -1}
+						<input type="text" class="edit-input" value="{$value['node']}"
+							   data-link="{link updateTask!}"
+							   data-link-edit="{link edit!}"
+                                                           autofocus
+						/>
+					{else}
+						<a n:href="edit! id=>$value[node_id]" class="ajax" data-editable="{$editableId}">
+							<label n:class="singleNode.$value['node_done']">
+								{$value['node']}
+							</label>
+						</a>
+					{/if}
+					<a n:href="delete! id=>$value[node_id], position=>$value[position]" class="ajax">
+						<button class="nodeDelete">x</button>
+					</a>
+				</li>
+			{/foreach}
+		</ul>
+	{/if}
+{/snippet}
