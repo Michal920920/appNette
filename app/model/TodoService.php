@@ -66,6 +66,7 @@ class TodoService {
                     
                     //uložení poslední node z db
                     $lastNode = $this->database->table(self::TABLE_NAME)
+                            ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
                             ->order(self::COLUMN_POSITION .' DESC')
                             ->limit(1)
                             ->fetch();
@@ -117,6 +118,7 @@ class TodoService {
                     //nahraď position u nodes, kde je position větší než u deletované
                     $this->database->table(self::TABLE_NAME)
                             ->where(self::COLUMN_POSITION.' > ?', $delNode['position'])
+                            ->where( self::COLUMN_USER_ID, $this->user->getIdentity()->id)
                             ->update([self::COLUMN_POSITION.'-=' => 1]);
                             
 		}else {
@@ -124,9 +126,9 @@ class TodoService {
                         $nodes = $this->sessionToDo->nodes;
                         
                         //aktualizuje pozice
-                        for($i=0;isset($nodes[$i]);$i++){
-                            if($nodes[$i]['position'] > $delNode['position']){
-                                $nodes[$i]['position'] = $nodes[$i]['position']-1;
+                        foreach($nodes as $key => $val){
+                            if($val['position'] > $delNode['position']){
+                                $nodes[$key]['position'] = $val['position']-1;
                             }
                         }
                         //vymaže požadovaný záznam a přeřadí prvky od indexu 0
@@ -179,6 +181,7 @@ class TodoService {
             if ($this->user->getIdentity()){
                 //správa pořadí pro registrovaného uživatele
                 $nodes = $this->database->table(self::TABLE_NAME)
+                            ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
                             ->order(self::COLUMN_POSITION .' ASC')
                             ->fetchPairs('node_id');
                 
@@ -194,7 +197,8 @@ class TodoService {
 
                 foreach($result as $key => $value){
                     $this->database->table(self::TABLE_NAME)
-                         ->where(self::COLUMN_NODE_ID,$key)
+                         ->where(self::COLUMN_NODE_ID, [$key,
+                                 self::COLUMN_USER_ID, [$this->user->getIdentity()->id]])
                          ->update([self::COLUMN_POSITION => $value]);}
             }else{
                 //správa pořadí pro hosta
