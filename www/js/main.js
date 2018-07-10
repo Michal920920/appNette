@@ -63,12 +63,12 @@ $(document).ready(function () {
              cursor: 'move',
              update: function(event, ui){
                  var item = ui.item,
-                     order = $('#snippet-todo-wholeList').sortable('toArray');
+                     order = $('#snippet-todo-wholeList').sortable('toArray',{attribute: 'data-id'});
                  $.nette.ajax({
 			type: "POST",
 			url :  $('#snippet-todo-toDoList').attr("data-link"),
 			data:{ 
-                            "todo-order": order
+                            "todo-order": order                            
                         }
 		});     
              }

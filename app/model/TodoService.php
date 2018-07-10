@@ -78,7 +78,7 @@ class TodoService {
                                       self::COLUMN_POSITION  => $lastNode['position'] !== null ? $lastNode['position'] +1 : 0]);
                               
 		}else {
-			if ($this->sessionToDo->nodes) {
+			if (isset($this->sessionToDo->nodes)) {
                                 //jaká je nejvyšší pozice
                                 $lastNodePos = end($this->sessionToDo->nodes);
                                 
@@ -95,7 +95,7 @@ class TodoService {
 				$this->sessionToDo->nodes[] = ["node" => $value, "node_done" => '', "node_id" => $maxNodeId['node_id'] +1, "position" => $lastNodePos['position'] +1];
 			}else {
 				$this->sessionToDo->nodes[0] = ["node" => $value, "node_done" => '', "node_id" => 1, "position" => 0];
-			}
+			}Debugger::barDump($this->sessionToDo->nodes);
 		}
 	}
 
@@ -141,7 +141,6 @@ class TodoService {
 	public function editNode($id, $value) {
         //update node dle vstupu uživatele
 		if ($this->user->getIdentity()) {
-                    
                     $this->database->table(self::TABLE_NAME)
                             ->where(self::COLUMN_NODE_ID, [$id,
                                     self::COLUMN_USER_ID, [$this->user->getIdentity()->id]])
@@ -176,52 +175,26 @@ class TodoService {
                     $this->sessionToDo->nodes = $nodes;
 		}
 	}
+        
         public function editOrder($order){
-            
+            //správa pořadí nodes
             if ($this->user->getIdentity()){
-                //správa pořadí pro registrovaného uživatele
-                $nodes = $this->database->table(self::TABLE_NAME)
-                            ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
-                            ->order(self::COLUMN_POSITION .' ASC')
-                            ->fetchPairs('node_id');
-                
-                //přeznačení klíčů v nodes od 0
-                $nodes = array_values($nodes);
-                //přehození klíčů v order jejich hodnotou
-                $order = array_flip($order);
-                
-                //nahrazení klíčů v $order za klíče v $nodes
-                $result = array_combine(array_map(function($x) use ($nodes){
-                    return $nodes[$x];
-                    },array_keys($order)), array_values($order));
-
-                foreach($result as $key => $value){
-                    $this->database->table(self::TABLE_NAME)
-                         ->where(self::COLUMN_NODE_ID, [$key,
-                                 self::COLUMN_USER_ID, [$this->user->getIdentity()->id]])
-                         ->update([self::COLUMN_POSITION => $value]);}
-            }else{
-                //správa pořadí pro hosta
-                
-                $nodes = $this->sessionToDo->nodes;
-                //přeznačení klíčů v nodes od 0
-                $nodes = array_values($nodes);
-                //přehození klíčů v order jejich hodnotou
-                $order = array_flip($order);
-                
-                //naplnění hodnoty position v nodes hodnotou uloženou v order
                 foreach($order as $key => $value){
-                    $nodes[$key]['position'] = $value;
+                    $this->database->table(self::TABLE_NAME)
+                         ->where(self::COLUMN_NODE_ID, [$value,
+                                 self::COLUMN_USER_ID, [$this->user->getIdentity()->id]])
+                         ->update([self::COLUMN_POSITION => $key]);
                     }
-                    
-                //nahrazení klíčů v $nodes za klíče uložené v $order
-                $result = array_combine(array_map(function($x) use ($order){
-                    return $order[$x];}
-                    ,array_keys($nodes)), array_values($nodes));
-                    
-                 //seřazení a uložení
-                ksort($result);
-                $this->sessionToDo->nodes = $result;  
+            }else{
+                $nodes = $this->sessionToDo->nodes;
+                $order = array_flip($order);
+                
+                foreach($nodes as $key => $val){
+                    $nodes[$key]['position'] = $order[$val['node_id']];
+                }
+                usort($nodes, array($this, 'sortByPosition'));
+                
+                $this->sessionToDo->nodes = $nodes;
             }
         }
         
@@ -230,4 +203,10 @@ class TodoService {
 		unset($this->sessionToDo->id);
 		unset($this->sessionToDo->nodes);
 	}
+        
+
+        public function sortByPosition($node1, $node2) {
+            return strnatcmp($node1['position'], $node2['position']);
+        }
 }
+
