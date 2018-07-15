@@ -78,7 +78,7 @@ class TodoService {
                                       self::COLUMN_POSITION  => $lastNode['position'] !== null ? $lastNode['position'] +1 : 0]);
                               
 		}else {
-			if (isset($this->sessionToDo->nodes)) {
+			if (isset($this->sessionToDo->nodes[0])) {
                                 //jaká je nejvyšší pozice
                                 $lastNodePos = end($this->sessionToDo->nodes);
                                 
