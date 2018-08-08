@@ -1,3 +1,4 @@
+
 body {
         font: 400 13.3333px Arial;
 	font-size: 15px;
@@ -15,29 +16,18 @@ h2{
     display: block;
     margin: 0 auto;
 }
-#node{
-    padding: 20px 235px 17px 60px;
-    background-color: #fdfdfd;
-    font-size: 20px;
-    border: 2px solid #dfdfdf;
-    display: block;
-    margin: 0 auto;
-}
-#snippet-todo-wholeList {
-    line-height: 1.4em;
+
+#snippet-todo-toDoListNodes {
+line-height: 1.4em;
     color: #4d4d4d;
     min-width: 230px;
     max-width: 550px;
     margin: 0 auto;
+    position: relative;
+    top: 80px;
 }
-#snippet-todo-toDoList{
-    display: block;
-    list-style-type: none;
-    margin-top: 0;
-    -webkit-padding-start: 0px;
-            
-}
-li{
+
+.nodeList{
     
     background: #f5f5f5;
     list-style-type: none;
@@ -47,18 +37,29 @@ li{
     border-top: 1px solid #ededed;
         
 }
-.nodeDone{
-    text-align: center;
-    width: 40px;
-    height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    border: none;
+
+.subnode{
+    
+    background: #f5f5f5;
+    list-style-type: none;
+    position: relative;
+    font-size: 18px;
+    border-bottom: 1px solid #ededed;
+    border-top: 1px solid #ededed;
+        
+}
+#subnodes{
+    
+    width: 170px;
+    float: right;
+    position: relative;
+    left: 170px;
+    top: -87px;
+    font-size: 26px;
+    background: whitesmoke;
     
 }
-.singleNode{
+.node{
     word-break: break-all;
     padding: 25px 60px 15px 15px;
     margin-left: 45px;
@@ -67,10 +68,29 @@ li{
     transition: color 0.4s;
     font-size: 24px;
 }
-.singleNode-hide{
+.node-hide{
     display:none;
 }
-.singleNodedone{
+.showSubnodes{
+    background-image: url(images/ico/next.png);
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 58px;
+    right: 0px;
+    
+}
+.hideSubnodes{
+   background-image: url(images/ico/previous.png);
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 58px;
+    right: 0px;
+}
+.nodedone{
     word-break: break-all;
     padding: 25px 60px 15px 15px;
     margin-left: 45px;
@@ -81,10 +101,10 @@ li{
     color: #a1bea1;
     text-decoration: line-through;
 }
-.edit-input-hide {
+.nodeTextEdit-hide {
     display:none;
 }
-.edit-input{
+.nodeTextEdit{
     word-break: break-all;
     padding: 23px 60px 15px 15px;
     margin-left: 45px;
@@ -96,19 +116,80 @@ li{
     box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
 }
-.nodeDelete{
+#nodeDelete{
+    background-image: url(images/ico/cancel.png);
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
     position: absolute;
-    top: 0;
-    right: 10px;
-    bottom: 0;
-    width: 40px;
-    height: 40px;
-    margin: auto 0;
-    font-size: 30px;
-    color: #C22;
-    margin-bottom: 11px;
-    transition: color 0.2s ease-out;
+    top: 31px;
+    right: 0px;
 }
+
+.boxDeleteSubnode{
+    float: right;
+    position: relative;
+    top: -3px;
+    color: #b71212;
+    font-size: 18px;
+}
+
+.boxSubnode{
+    width: 63%;
+    padding: 5px 0px;
+    position: relative;
+    left: 80px;
+}
+.boxMoveSubnode{
+    float: left;
+    position: relative;
+    top: -3px;
+    color: #000080;
+    font-size: 17px;
+}
+#boxAddSubnodeEdit{
+    background-image: url(images/ico/plus_small.png);
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: 1px;
+    right: -50%;
+}
+#boxAddSubnodeNew{
+    background-image: url(images/ico/plus_small.png);
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    position: relative;
+    top: 1px;
+    right: -50%;
+}
+
+.boxSubnodeInput{
+    margin: 0px 8px;
+}
+#nodeEdit{
+    background-image: url(images/ico/edit.png);
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    top: 3px;
+    right: -2px;
+}
+#newNode {
+    background-image: url(images/ico/plus.png);
+    background-repeat: no-repeat;
+    width: 65px;
+    height: 65px;
+    position: absolute;
+    left: 0;
+    top: 75px;
+    right: 0;
+    margin: 0 auto;
+}
+
 button {
     margin: 0;
     padding: 0;
