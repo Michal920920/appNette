@@ -131,8 +131,7 @@ class TodoService {
                     
                     //uložení deletované node
                     $delNode = $this->database->table(self::TABLE_NODES)
-                            ->where(self::COLUMN_NODE_ID, [$nodeId,
-                                    self::COLUMN_USER_ID, [$this->user->getIdentity()->id]])
+                            ->where(self::COLUMN_NODE_ID, $nodeId)
                             ->order(self::COLUMN_POSITION .' ASC')
                             ->fetch();
                     
@@ -156,24 +155,22 @@ class TodoService {
 	}
         
         public function deleteSubnode($id) {
-            
+
 		if ($this->user->getIdentity()) {
                     //uložení deletované subnode
                     $delNode = $this->database->table(self::TABLE_SUBNODES)
-                            ->where(self::COLUMN_ID, [$id])
-                            ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
+                            ->where(self::COLUMN_ID, $id)
                             ->order(self::COLUMN_POSITION .' ASC')
                             ->fetch();
                     //delete subnode
                     $this->database->table(self::TABLE_SUBNODES)
-                            ->where(self::COLUMN_ID, [$id])
-                            ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
+                            ->where(self::COLUMN_ID, [$id, 
+                                    self::COLUMN_USER_ID, [$this->user->getIdentity()->id]])
                             ->delete();
-                    
                     //nahraď position u subnode, kde je position větší než u deletované
                     $this->database->table(self::TABLE_SUBNODES)
                             ->where(self::COLUMN_POSITION.' > ?', $delNode['position'])
-                            ->where(self::COLUMN_NODE_ID, $delNode['node_id'])
+                            ->where(self::COLUMN_ID, $id)
                             ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
                             ->update([self::COLUMN_POSITION.'-=' => 1]);
                             
@@ -195,8 +192,8 @@ class TodoService {
         //update subnode dle vstupu uživatele
 		if ($this->user->getIdentity()) {
                     $this->database->table(self::TABLE_SUBNODES)
-                            ->where(self::COLUMN_ID, [$id])
-                            ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
+                            ->where(self::COLUMN_ID, [$id,
+                                    self::COLUMN_USER_ID, [$this->user->getIdentity()->id]])
                             ->update([self::COLUMN_SUBNODE => $value]);
 		}
 	}
@@ -215,14 +212,11 @@ class TodoService {
             //správa pořadí nodes
             if ($this->user->getIdentity()){
                 if($table == self::TABLE_SUBNODES){
-                    
-                    
-                    Debugger::barDump($order, 'order');
                     foreach($order as $key => $value){
                         $this->database->table(self::TABLE_SUBNODES)
-                             ->where(self::COLUMN_ID, [$value])
-                              ->where(self::COLUMN_NODE_ID, $id)
-                              ->where(self::COLUMN_USER_ID, $this->user->getIdentity()->id)
+                             ->where(self::COLUMN_ID, [$value,
+                                     self::COLUMN_USER_ID, [$this->user->getIdentity()->id],
+                                    self::COLUMN_NODE_ID, $id])
                              ->update([self::COLUMN_POSITION => $key]);
                     }
                 }else{
