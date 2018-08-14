@@ -1,7 +1,7 @@
 
 {if isset($user->getIdentity()->username)}
 	<h2 n:block=title>Úkoly uživatele: {$user->getIdentity()->username}</h2>
-        <a id="newNode"></a>   
+        
 {else}
 	<h2>Vaše úkoly</h2>
 {/if}
@@ -76,6 +76,7 @@
     {/snippet}  
          </div> 
     {/if}
+    <a id="newNode"></a>   
 {/snippet}  
                     <div id="newBox" style="display: none;" data-link="{link addNode!}">
                         Název: <input type="text" id="boxNodeNew"/><br />
