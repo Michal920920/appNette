@@ -17,155 +17,160 @@ h2{
 }
 
 #snippet-todo-wholeList{
-    width: 340px;
+    width: 500px;
     margin: 0 auto;
     position: relative;
     top: 20px;
 }
 
 .nodeList{
-    background-image: url(images/ico/node-line.png);
-    background-repeat: no-repeat;
-    background-position: 50% 100%;
+    background-color: white;
     text-align: center;
-    height: auto;
+    opacity: 0.9;
+    height: 78px;
+    width: 500px;
     position: relative;
-    padding: 11px 0px;
-    margin: 10px 0px;
-    font-size: 18px;
+    border-bottom: 2px solid #bcbcbc;
+    font-size: 25px;
 }
 
 .subnodeList{
     background-image: url(images/ico/subnode-line.png);
     background-repeat: no-repeat;
     background-position: 0% 100%;
-    font-size: 18px;
+    font-size: 20px;
     text-align: start;
-    padding: 0px 5px;
+    padding: 0px 3px;
 }
 
 #subnodes{
     position: absolute;
-    left: 120%;
-    top: 10%;
+    left: 102%;
+    top: -7%;
     width: fit-content;
     max-width: 200px;
     min-width: 140px;
-    font-size: 24px
     
 }
-.node-hide{
-    display:none;
+
+.nodeListdone{
+    background-color: #ededed;
+    text-align: center;
+    opacity: 0.9;
+    height: 78px;
+    width: 500px;
+    position: relative;
+    border-bottom: 2px solid #bcbcbc;
+    font-size: 25px;
 }
 
 .nodedone{
-   color: #a1bea1;
+   color: #50bb7f;
    text-decoration: line-through;
+   position: relative;
+   top: 30%;
 }
-#nodeDoneButton{
-    position: relative;
-    right: -62px;
-    top: 19px;
-    float: left;
-
-}
-.nodeTextEdit-hide {
-    display:none;
-}
-.nodeTextEdit{
-    word-break: break-all;
-    padding: 23px 60px 15px 15px;
-    margin-left: 45px;
-    display: block;
-    line-height: 25px;
-    transition: color 0.4s;
-    font-size: 24px;
-    border: 1px solid #999;
-    box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-}
-
 
 .boxDeleteSubnode{
-    float: right;
+    float: left;
     position: relative;
-    top: -3px;
-    color: #b71212;
-    font-size: 18px;
+    top: -37px;
+    left: -18px;
+    color: #ffa3aa;
+    font-size: 27px;
 }
 
 .boxSubnode{
-    width: 63%;
+    line-height: 0;
+    left: 10px;
+    width: 90%;
     padding: 5px 0px;
     position: relative;
-    left: 80px;
 }
+
 .boxMoveSubnode{
-    float: left;
+float: left;
     position: relative;
-    top: -3px;
-    color: #000080;
-    font-size: 17px;
-}
-#boxAddSubnodeEdit{
-    background-image: url(images/ico/plus_small.png);
-    background-repeat: no-repeat;
-    width: 32px;
-    height: 32px;
-    position: relative;
-    top: 1px;
-    right: -50%;
-}
-#boxAddSubnodeNew{
-    background-image: url(images/ico/plus_small.png);
-    background-repeat: no-repeat;
-    width: 32px;
-    height: 32px;
-    position: relative;
-    top: 1px;
-    right: -50%;
+    top: -37px;
+    color: #c3d1f9;
+    font-size: 20px;
 }
 
 .boxSubnodeInput{
     margin: 0px 8px;
+    height: auto;
 }
 
 .showSubnodes{
-    background-image: url(images/ico/next.png);
+    background-image: url(images/buttons/subnodes_butt_h.png);
     background-repeat: no-repeat;
-    width: 24px;
-    height: 24px;
+    cursor: pointer;
+    opacity: 0.5;
+    width: 48px;
+    height: 78px;
     position: absolute;
-    right: -10%;
+    right: 0px;
     
 }
 .hideSubnodes{
-   background-image: url(images/ico/previous.png);
+    background-image: url(images/buttons/subnodes_butt_hide.png);
     background-repeat: no-repeat;
-    width: 24px;
-    height: 24px;
+    cursor: pointer;
+    width: 48px;
+    height: 78px;
     position: absolute;
-    right: -10%;
+    right: 0px;
+}
+
+.node{
+    position: relative;
+    top: 30%;
 }
 
 #nodeDelete{
-    background-image: url(images/ico/cancel.png);
+    background-image: url(images/buttons/del_button_h.png);
     background-repeat: no-repeat;
-    width: 24px;
-    height: 24px;
+    cursor: pointer;
+    opacity: 0;
+    width: 48px;
+    height: 39px;
     position: absolute;
     top: 50%;
-    left: -20%;
+    left: 0px;
+}
+#nodeDeleteShow{
+    background-image: url(images/buttons/del_button_h.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    opacity: 1;
+    width: 48px;
+    height: 39px;
+    position: absolute;
+    top: 50%;
+    left: 0px;
 }
 
 #nodeEdit{
-    background-image: url(images/ico/edit2.png);
+    background-image: url(images/buttons/edit_button_h.png);
     background-repeat: no-repeat;
-    width: 24px;
-    height: 24px;
+    cursor: pointer;
+    opacity: 0;
+    width: 48px;
+    height: 39px;
     position: absolute;
     top: 0%;
-    left: -20%;
+    left: 0px;
+}
+#nodeEditShow{
+    background-image: url(images/buttons/edit_button_h.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+    opacity: 1;
+    width: 48px;
+    height: 39px;
+    position: absolute;
+    top: 0%;
+    left: 0px;
 }
 #newNode {
     background-image: url(images/ico/plus.png);
@@ -189,6 +194,14 @@ button {
     appearance: none;
 }
 
+#lenghtError {
+    height: 0px;
+    position: relative;
+    top: -24px;
+    left: 53px;
+    font-size: 15px;
+    color: #d86161;
+}
 a {
   color: black;
   text-decoration: none; /* no underline */
@@ -232,4 +245,131 @@ form .required label {
 form .error {
 	color: #D00;
 	font-weight: bold;
+}
+
+#newBox, #editBox{
+    font-family: 'Open Sans Condensed', arial, sans;
+    background: #FFFFFF;
+    margin: 0px auto;
+    height: 0px;
+
+}
+
+#newBox input[type="text"],
+#newBox input[type="date"],
+#newBox input[type="datetime"],
+#newBox input[type="email"],
+#newBox input[type="number"],
+#newBox input[type="search"],
+#newBox input[type="time"],
+#newBox input[type="url"],
+#newBox input[type="password"],
+#newBox textarea,
+#newBox select,
+#editBox input[type="text"],
+#editBox input[type="date"],
+#editBox input[type="datetime"],
+#editBox input[type="email"],
+#editBox input[type="number"],
+#editBox input[type="search"],
+#editBox input[type="time"],
+#editBox input[type="url"],
+#editBox input[type="password"],
+#editBox textarea,
+#editBox select 
+{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    margin-bottom: 10px;
+    font: 16px Arial, Helvetica, sans-serif;
+    height: 43px;
+}
+
+
+#saveButton{
+    -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    background-color: #2CBBBB;
+    border: 1px solid #27A0A0;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 14px;
+    padding: 8px 18px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+#boxAddSubnodeNew,
+#boxAddSubnodeEdit{
+box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    background-color: #2CBBBB;
+    border: 1px solid #27A0A0;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-family: 'Open Sans Condensed', sans-serif;
+    position: relative;
+    left: 5px;
+    padding: 3px 8px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+input[type=checkbox] + label {
+  
+  margin: 0.2em;
+  cursor: pointer;
+  padding: 0.2em;
+  }
+  
+  .nodeDoneCheck{
+        position: absolute;
+  right: 0px;
+  }
+  
+  #done{
+    position: absolute;
+    left: 48px;
+    top: -1px;
+  }
+
+input[type=checkbox] {
+  display: none;
+}
+
+input[type=checkbox] + div:before {
+    content: "\2714";
+    border-radius: 0.2em;
+    display: inline-block;
+    width: 20px;
+    height: 36px;
+    padding: 17px 9px 25px 10px;
+    vertical-align: bottom;
+    color: #e7e7e7;
+    transition: .2s;
+  }
+
+input[type=checkbox]:checked + div:before {
+    
+      color: #50bb7f;
+
+}
+
+input[type=checkbox]:disabled + div:before {
+  transform: scale(1);
+  border-color: #aaa;
+}
+
+input[type=checkbox]:checked:disabled + div:before {
+  transform: scale(1);
+  background-color: #bfb;
+  border-color: #bfb;
 }

@@ -1,10 +1,8 @@
 
 {if isset($user->getIdentity()->username)}
 	<h2 n:block=title>Úkoly uživatele: {$user->getIdentity()->username}</h2>
-        
-{else}
-	<h2>Vaše úkoly</h2>
-{/if}
+
+
 {snippet wholeList}
 {if $nodes} 
 
@@ -14,20 +12,20 @@
                 {snippet $key}
                     
                 <div class="nodeList" data-id="{$value['node_id']}" data-value="{$value['node']}" id="{$value['position']}">
-                    <a n:href="done! id=>$value[node_id], done=>$value[node_done]" class="ajax">
-                        <input type="checkbox" class="nodeDone" data-link="{link done!}" n:attr="checked => $value['node_done'] ? true"/>
-                    </a>
-                        <a id="{$value[node_id]}" class="ajax">
-                            <label n:class="node.$value['node_done']">
+
+                      
+                            <a n:href="done! id=>$value[node_id], done=>$value[node_done]" class="ajax">
+                                 <input type="checkbox" class="nodeDoneCheck" data-link="{link done!}" n:attr="checked => $value['node_done'] ? true"/>
+                                 <div id="done"></div>
+                                 <label n:class="node.$value['node_done']">
                                     {$value['node']}
-                            </label>
-                        </a>
-                            
-                    <a n:href="delete! id=>$value[node_id]" class="ajax" id="nodeDelete"></a>
-                    <button id="nodeEdit" data-link="{link getBoxSubnode!}"></button>
+                                </label>
+                               
+                            </a>
+                     
                     
                     {if $value['subnode']}
-                        {if isset($subnodes)}    
+                        {if isset($subnodes)}      
                         <div class="toDoListSub{$value['node_id']}" id='subnodes' data-link="{link updateOrder!}" data-id="{$value['node_id']}">
                             {foreach $subnodes as $subnodeKey => $subnodeValue}
                                 {if $value['node_id'] == $subnodeValue['node_id']}
@@ -44,10 +42,14 @@
                         {/if}
                         {if isset($subnodes) && $value['node_id'] == $subnodeValue['node_id']}  
                             <button class="hideSubnodes" data-link="{link getSubnode!}"></button>
+                            <a n:href="delete! id=>$value[node_id]" class="ajax" id="nodeDeleteShow"></a>
+                            <button id="nodeEditShow" data-link="{link getBoxSubnode!}"></button>
                         {else} 
                             <button class="showSubnodes" data-link="{link getSubnode!}"></button>
                        {/if}    
                    {/if}
+                    <a id="nodeDelete" n:href="delete! id=>$value[node_id]" class="ajax"></a>
+                    <button id="nodeEdit" data-link="{link getBoxSubnode!}"></button>
                     </div> 
                 {/snippet}
             {/foreach}
@@ -57,32 +59,29 @@
     {snippet box}
                     {if isset($boxNodeId)}
                      <div id="editBox" style="display: none;" data-link="{link editNode!}">
-                                Název: <input type="text" id="boxNodeEdit" value="{$boxNodeVal}" data-id="{$boxNodeId}"/><br />
+                                Název: <input type="text" id="boxNodeEdit" value="{$boxNodeVal}" data-id="{$boxNodeId}" maxlength="30"/>
                                 Splnit do: <input type="date" id="boxDateEdit"/>
-                                <p></p>
-                        <button id="boxAddSubnodeEdit"></button>        
+                                Podúkoly: <input type="button" value="nový" id="boxAddSubnodeEdit"/>
                         <div id="boxSubnodes">
                          {foreach $boxSubnodes as $subnodeKey => $subnodeValue}
                                 <div class="boxSubnode">
-                                    <input type="text" class="boxSubnodeInput" id="{$subnodeValue['id']}" value="{$subnodeValue['subnode']}"/>
+                                    <textarea class="boxSubnodeInput" id="{$subnodeValue['id']}">{$subnodeValue['subnode']}</textarea>
                                     <div class="boxMoveSubnode">↕</div>
                                     <div class="boxDeleteSubnode">x</div>   
                                 </div>
                             {/foreach}
                         </div>
-                        
                         </div>
                     {/if}
     {/snippet}  
          </div> 
     {/if}
-    <a id="newNode"></a>   
+    <a id="newNode"></a> 
 {/snippet}  
                     <div id="newBox" style="display: none;" data-link="{link addNode!}">
-                        Název: <input type="text" id="boxNodeNew"/><br />
+                        Název: <input type="text" id="boxNodeNew" maxlength="30"/>
                         Splnit do: <input type="date" id="boxDateNew"/>
-                        <p></p>
-                        <div id="boxSubnodes" data-link="{link addSubnode!}"></div>
-                        <button id="boxAddSubnodeNew"></button>
+                        Podúkoly: <input type="button" value="nový" id="boxAddSubnodeNew"/>
+                        <div id="boxSubnodes"></div>
                     </div>
-     
+     {/if}
