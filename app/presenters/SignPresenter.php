@@ -3,14 +3,12 @@
 namespace App\Presenters;
 
 use Nette;
-use App\Model\UserManager;
+use App\Model\DataManager\UserDataManager;
 use Nette\Application\UI\Form;
-use Nette\Security\User;
-use Nette\Diagnostics\Debugger;
 
 class SignPresenter extends BasePresenter{
     
-    /** @var UserManager @inject*/
+    /** @var UserDataManager @inject*/
     public $userManager;
     
     protected function createComponentSignInForm()
@@ -71,7 +69,7 @@ class SignPresenter extends BasePresenter{
     
     public function duplicityUsername($item)
     {
-       if($this->userManager->duplicity('username', $item->value)){
+       if($this->userManager->duplicity($item->value)){
             return false;
        }else{
            return true;

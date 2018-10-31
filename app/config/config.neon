@@ -10,7 +10,6 @@ application:
 	mapping:
 		*: App\*Module\Presenters\*Presenter
 
-
 session:
 	expiration: 14 days
 
@@ -24,11 +23,27 @@ database:
 
 
 services:
-        - App\Model\TodoService
         router: App\RouterFactory::createRouter
-        userManager: App\Model\UserManager
-
         - App\Components\TodoControlFactory
+
+        userAuthenticateDataManager:
+            class: App\Model\DataManager\UserAuthenticateDataManager
+            inject: true
+        userDataManager:
+            class:  App\Model\DataManager\UserDataManager
+            inject: true
+        userRepository:
+            class:  App\Model\Repository\UserRepository
+            inject: true
+        todoServiceDataManager:
+            class:  App\Model\DataManager\TodoServiceDataManager
+            inject: true
+        nodesRepository:
+            class:  App\Model\Repository\NodesRepository
+            inject: true
+        subnodesRepository:
+            class:  App\Model\Repository\SubnodesRepository
+            inject: true
         todoControl:
         	class: App\Components\TodoControl
         	autowired: no

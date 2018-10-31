@@ -117,7 +117,7 @@ function getEditableNode(node){
                 buttons:[{
                         text: 'uložit',
                         click: function(){
-                            var values = $('#boxSubnodes div textarea').map(function(){
+                            var values = $('.boxSubnodeInput').map(function(){
                             return $(this).val();
                                 }).get();
                             if($("#boxNodeEdit").val() == 0){
@@ -153,7 +153,7 @@ $(document).on('click','#newNode', function(){
                         text: 'uložit',
                         id: 'saveButton',
                         click: function(){
-                            var values = $('#boxSubnodes div textarea').map(function(){
+                            var values = $('.boxSubnodeInput').map(function(){
                             return $(this).val();
                                 }).get();
                             if($("#boxNodeNew").val() == 0){
@@ -186,7 +186,7 @@ $(document).on('click', '#boxAddSubnodeNew', function(){
                     <div class="boxDeleteSubnode">x</div>\n\
                 </div>');
     
-    $('#boxSubnodes').append(input);
+    $('#newBox #boxSubnodes').append(input);
     boxSubnodesSortable();
 });
 
@@ -198,7 +198,7 @@ $(document).on('click', '#boxAddSubnodeEdit', function(){
                 <div class="boxDeleteSubnode">x</div>\n\
             </div>');
     
-    $('#boxSubnodes:last-child').append(boxSubnode);
+    $('#editBox #boxSubnodes:last-child').append(boxSubnode);
     boxSubnodesSortable();
     
 });

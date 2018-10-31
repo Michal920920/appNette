@@ -2,21 +2,13 @@
 
 namespace App\Components;
 
-use App\Model\TodoService;
+use App\Model\DataManager\TodoServiceDataManager;
 use Nette\Application\UI;
-use Tracy\Debugger;
-use Tracy;
-
-use App\Components\FormControlFactory;
-use App\Components\FormControl;
-use App\Model\FormService;
 
 class TodoControl extends UI\Control {
 
-	/** @var TodoService @inject */
+	/** @var TodoServiceDataManager @inject */
 	public $todoService;
-        
-        public $showSub;
         
 	public function render() {
                 if(!isset($this->template->nodes)){
@@ -35,6 +27,7 @@ class TodoControl extends UI\Control {
         
         public function handleGetBoxSubnode($id, $value){
            if($id){
+               
                 $this->template->boxSubnodes = $this->todoService->getSubnode($id);
                 $this->template->boxNodeVal = $value;
                 $this->template->boxNodeId = $id;
@@ -54,19 +47,18 @@ class TodoControl extends UI\Control {
                     foreach($subValue as $key){
                         $this->todoService->addSubnode($key, $id);
                     }
-                    $this->todoService->editNodeHasSubnodes($id, 1);
+                    $this->todoService->editNodeHasSubnode($id, 1);
                 }
 		$this->redrawControl('wholeList');
 	}
         
         public function handleEditNode($value, $date, $subValue = array(), $id = null) {
                 
-               
+              
                 $oldSub = \array_values($this->todoService->getSubnode($id));
                 $oldSubNum = \count($oldSub);
                 $newSubNum = \count($subValue);
                 $difference = $newSubNum - $oldSubNum;
-               
                 //uprav hodnoty v Node    
                 $this->todoService->editNode($id, $value, $date);
                 
@@ -96,7 +88,7 @@ class TodoControl extends UI\Control {
                 
                 //pokud node nemá subnodes, nastav jí hodnotu 'subnodes' v db na 0   
                 if($this->todoService->getSubnode($id) == null){
-                    $this->todoService->editNodeHasSubnodes($id, 0);
+                    $this->todoService->editNodeHasSubnode($id, 0);
                 }
                 
                 //pokud má node subnodes, zobraz je

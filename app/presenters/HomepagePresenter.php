@@ -3,8 +3,6 @@
 namespace App\Presenters;
 
 use App\Components\TodoControlFactory;
-use App\Model\TodoService;
-use App\Model\UserManager;
 use App\Components\TodoControl;
 
 class HomepagePresenter extends BasePresenter {
