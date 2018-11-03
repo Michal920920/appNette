@@ -53,51 +53,35 @@ class TodoControl extends UI\Control {
 	}
         
         public function handleEditNode($value, $date, $subValue = array(), $id = null) {
-                
-              
-                $oldSub = \array_values($this->todoService->getSubnode($id));
-                $oldSubNum = \count($oldSub);
-                $newSubNum = \count($subValue);
-                $difference = $newSubNum - $oldSubNum;
-                //uprav hodnoty v Node    
+           
+                $oldSub = array_values($this->todoService->getSubnode($id));
                 $this->todoService->editNode($id, $value, $date);
                 
-                //do existujících subnodes v db ulož upravené
-                foreach($subValue as $value => $key){
-                    if(isset($oldSub[$value])){
-                          $this->todoService->editSubnode($oldSub[$value]['id'], $key);
-                      }
-                 } 
-                 
-                 //pokud je subnodes v db více, než nových po editaci, smaž rozdílový počet
-                 if($difference < 0){
-                       $difference = abs($difference);
-                       for($i = $newSubNum;$difference !== 0;$difference--){
-                            $this->todoService->deleteSubnode($oldSub[$i]['id']);
-                             $i++;
-                       }
-                   }
-                   
-                //pokud je subnodes v db méně, než nových po editaci, vytvoř nové
-                else if($difference > 0){
-                    for($i = $oldSubNum; $difference !== 0; $difference--){
-                        $this->todoService->addSubnode($subValue[$i],$id);
-                        $i++;
+                //uprav hodnoty
+                foreach($oldSub as $value => $key){
+                    if(isset($subValue[$value]) && $oldSub[$value]['subnode'] !== $subValue[$value]){
+                        $this->todoService->editSubnode($oldSub[$value]['id'], $subValue[$value]);
+                        
+                    }else if(!isset($subValue[$value])){
+                        $this->todoService->deleteSubnode($oldSub[$value]['id']);
                     }
+                }
+                foreach($subValue as $value => $key){
+                    if(!isset($oldSub[$value]) && count($subValue) > count($oldSub)){
+                        $this->todoService->addSubnode($subValue[$value],$id);
+                    }  
                 }
                 
                 //pokud node nemá subnodes, nastav jí hodnotu 'subnodes' v db na 0   
-                if($this->todoService->getSubnode($id) == null){
+                if($this->todoService->getSubnode($id)){
+                    $this->template->subnodes = $this->todoService->getSubnode($id);
+                    
+                }else{
                     $this->todoService->editNodeHasSubnode($id, 0);
                 }
-                
-                //pokud má node subnodes, zobraz je
-                else{
-                    $this->template->subnodes = $this->todoService->getSubnode($id);
-                }
-                $this->redrawControl('wholeList');
+                $this->redrawControl('toDoListNodes');
             }
-
+        
         public function handleAddSubnode($value, $id) {
                 
                 $this->todoService->addSubnode($value, $id);

@@ -3,7 +3,6 @@
 namespace App\Model\Repository;
 
 use Nette\Database\Table\Selection;
-use Nette\Database\Table\ActiveRow;
 
 class SubnodesRepository extends BaseRepository {
 

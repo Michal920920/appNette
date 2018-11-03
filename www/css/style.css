@@ -251,7 +251,7 @@ form .error {
     font-family: 'Open Sans Condensed', arial, sans;
     background: #FFFFFF;
     margin: 0px auto;
-    height: 0px;
+    height: auto;
 
 }
 

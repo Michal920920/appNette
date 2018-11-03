@@ -34,7 +34,7 @@ class NodesRepository extends BaseRepository {
                     ->fetchAll();
     }
     
-    public function fetchByNodeId($nodeId): ActiveRow {
+    public function fetchByNodeId($nodeId) {
             return $this->findAll()
                     ->where($this->columnNodeId, $nodeId)
                     ->order($this->columnPosition." ASC")
